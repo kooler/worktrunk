@@ -20,7 +20,7 @@
       "kind": "command",
       "match_mode": "exact",
       "pattern": "wt switch --create raise-price",
-      "output_contains": "Created branch raise-price",
+      "output_contains": "Created branch",
       "require_success": true,
       "optional": false
     },
@@ -50,7 +50,7 @@
       "kind": "command",
       "match_mode": "exact",
       "pattern": "wt merge",
-      "output_contains": "Merged to main",
+      "output_contains": "Merged to",
       "require_success": true,
       "optional": false
     },

@@ -9,10 +9,8 @@ curl -fsSL https://github.com/max-sixty/worktrunk/releases/latest/download/workt
 install -m 755 /tmp/worktrunk-aarch64-unknown-linux-musl/wt /usr/local/bin/wt
 rm -rf /tmp/worktrunk-aarch64-unknown-linux-musl
 
-# Visitors get bash with shell integration, so `wt switch` and `wt merge`
-# change directory the way they do on an installed machine.
-sed -i 's#^root:\(.*\):/bin/sh$#root:\1:/bin/bash#' /etc/passwd
-echo '[ -f ~/.bashrc ] && . ~/.bashrc' > "$HOME/.bash_profile"
+# Studio launches bash explicitly with after-load.sh as its rcfile; changing
+# root's login shell would not change Demoshell's running ash session.
 echo 'PS1='"'"'\[\e[32m\]\W\[\e[0m\] $ '"'" > "$HOME/.bashrc"
 wt config shell install bash --yes
 

@@ -7,19 +7,21 @@ The VM's definition is kept here and entered into the Demoshell studio, where th
 | File | Studio field |
 |------|--------------|
 | `recipe.sh` | Base image script |
-| `after-load.sh` | VM startup → A shell prompt → After VM load |
+| `after-load.sh` | Files → `/root/after-load.sh` |
 | `guide.json` | Guide: title, order, finish card, and steps |
 
 `guide.json` uses the field names Demoshell's embed API serves for a guide. Each step ticks when the visitor runs `pattern`, and `output_contains` must appear in its output, so check those strings against real output when changing the recipe or `wt`'s messages.
+
+Set **When a visitor opens the VM → Start an app** to `bash --rcfile /root/after-load.sh`. Demoshell's shell-prompt mode runs ash even if the recipe changes root's login shell. Starting bash explicitly loads Worktrunk's shell integration so switching and merging move the visitor's shell.
 
 To check the full recipe before a Studio build, run this from the repository root with Docker:
 
 ```bash
 docker run --rm -it --platform linux/arm64 \
   -v "$PWD/docs/demos/demoshell:/demo:ro" \
-  alpine:latest sh -ec 'sh -e /demo/recipe.sh; exec bash -l'
+  alpine:latest sh -ec 'sh -e /demo/recipe.sh; exec bash --rcfile /demo/after-load.sh'
 ```
 
-In the container, run `source /demo/after-load.sh`, then each step's `pattern` from `guide.json`. Check that each step's `output_contains` appears and that merging returns the shell to `/root/acme` with the updated price. This exercises the release download and Alpine shell setup as well as the guide commands; the Studio build and automatic guide completion still need checking in Demoshell.
+In the container, run each step's `pattern` from `guide.json`. Check that each step's `output_contains` appears and that merging returns the shell to `/root/acme` with the updated price. This exercises the release download and Alpine shell setup as well as the guide commands; the Studio build and automatic guide completion still need checking in Demoshell.
 
 Demoshell rebuilds the VM when a Worktrunk release is published, so the recipe installs the latest release rather than a pinned version.

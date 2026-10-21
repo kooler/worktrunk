@@ -2,6 +2,8 @@
 # It installs the latest wt release and prepares the demo repository the guide
 # walks through; see README.md.
 
+set -eu
+
 apk add bash curl git less xz
 
 curl -fsSL https://github.com/max-sixty/worktrunk/releases/latest/download/worktrunk-aarch64-unknown-linux-musl.tar.xz \

@@ -12,6 +12,14 @@ The VM's definition is kept here and entered into the Demoshell studio, where th
 
 `guide.json` uses the field names Demoshell's embed API serves for a guide. Each step ticks when the visitor runs `pattern`, and `output_contains` must appear in its output, so check those strings against real output when changing the recipe or `wt`'s messages.
 
-To check the flow before a build, run `recipe.sh` without its `apk`, download, and `/etc/passwd` lines, using `HOME` set to a scratch directory and a local `wt` on `PATH`. Then, in a bash that sources the generated `.bash_profile`, run `after-load.sh` followed by each step's `pattern`.
+To check the full recipe before a Studio build, run this from the repository root with Docker:
+
+```bash
+docker run --rm -it --platform linux/arm64 \
+  -v "$PWD/docs/demos/demoshell:/demo:ro" \
+  alpine:latest sh -ec 'sh -e /demo/recipe.sh; exec bash -l'
+```
+
+In the container, run `source /demo/after-load.sh`, then each step's `pattern` from `guide.json`. Check that each step's `output_contains` appears and that merging returns the shell to `/root/acme` with the updated price. This exercises the release download and Alpine shell setup as well as the guide commands; the Studio build and automatic guide completion still need checking in Demoshell.
 
 Demoshell rebuilds the VM when a Worktrunk release is published, so the recipe installs the latest release rather than a pinned version.

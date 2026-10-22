@@ -5,7 +5,6 @@
 export const sidebar = [
   { label: 'Overview', link: '/' },
   { label: 'Install', link: '/#install' },
-  { label: 'Try it', link: '/try-it/' },
   {
     label: 'Commands',
     items: [

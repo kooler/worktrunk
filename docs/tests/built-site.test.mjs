@@ -117,10 +117,10 @@ test('build preserves the public route contract', async () => {
   for (const file of expected) assert.ok(files.has(file), `missing ${file}`);
 
   const sitemap = await readFile(path.join(dist, 'sitemap-0.xml'), 'utf8');
-  for (const route of publicRoutes) {
+  for (const route of publicRoutes.filter((route) => route !== '/try-it/')) {
     assert.match(sitemap, new RegExp(`<loc>https://worktrunk\\.dev${route}</loc>`));
   }
-  assert.doesNotMatch(sitemap, /worktrunk\.dev\/(?:404|worktrunk)\//);
+  assert.doesNotMatch(sitemap, /worktrunk\.dev\/(?:404|worktrunk|try-it)\//);
 
   const robots = await readFile(path.join(dist, 'robots.txt'), 'utf8');
   for (const match of robots.matchAll(/^Sitemap:\s+(\S+)$/gm)) {
